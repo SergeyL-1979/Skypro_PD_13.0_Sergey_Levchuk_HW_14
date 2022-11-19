@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+
+<div class="box">
+    <table class="table" style="margin: auto; width: auto">
+    <thead style="background: aqua">
+        <tr>
+            <th>СТРАНА</th>
+            <th>ЗАГОЛОВОК</th>
+            <th>РЕЖИССЕР</th>
+            <th>ГОД ВЫХОДА</th>
+            <th>ЖАНР</th>
+        </tr>
+    </thead>
+    {% for i in movies_title %}
+    <tbody>
+        <tr>
+            <td>{{ i.country }}</td>
+            <td>{{ i.title }}</td>
+            <td>{{ i.description }}</td>
+            <td>{{ i.release_year }}</td>
+            <td>{{ i.listed_in }}</td>
+        </tr>
+    </tbody>
+    {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
+</body>
+</html>
