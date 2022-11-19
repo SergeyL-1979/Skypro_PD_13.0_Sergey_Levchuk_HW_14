@@ -177,6 +177,25 @@ def sql_rating(rat):
 #     return group_sql
 
 
+# def sql_group_rating():
+#     # Формат запроса:
+#     # /rating/children #(включаем сюда рейтинг G)
+#     # /rating/family   #(G, PG, PG-13)
+#     # /rating/adult    #(R, NC-17)
+#     # rat_tat = ['TV-PG', 'TV-MA', 'R', 'PG-13', 'TV-14', 'TV-PG', 'NR', 'TV-G', 'TV-Y7', 'TV-Y', 'G', 'PG', 'NC-17']
+#     with sqlite3.connect('netflix.db') as connection:
+#         # connection.row_factory = sqlite3.Row
+#         cursor = connection.cursor()
+#         query = """
+#                 SELECT rating, title
+#                 FROM netflix
+#                 WHERE rating IN ('G', 'PG', 'PG-13')
+#                 """
+#
+#         cursor.execute(query)
+#         for cur in cursor.fetchall():
+#             print(cur)
 
-# g_rat = sql_group_rating('R')
+# g_rat = sql_group_rating()
 # pprint(g_rat)
+# pprint(data_base())

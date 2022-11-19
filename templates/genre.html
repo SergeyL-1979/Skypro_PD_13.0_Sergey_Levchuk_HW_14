@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+
+<div class="box">
+    <table class="table" style="margin: auto; width: auto">
+    <thead style="background: aqua">
+        <tr>
+            <th>ЗАГОЛОВОК</th>
+            <th>ОПИСАНИЕ</th>
+        </tr>
+    </thead>
+    {% for i in all_genre %}
+    <tbody>
+        <tr>
+            <td>{{ i.title }}</td>
+            <td>{{ i.description }}</td>
+        </tr>
+    </tbody>
+    {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
+</body>
+</html>

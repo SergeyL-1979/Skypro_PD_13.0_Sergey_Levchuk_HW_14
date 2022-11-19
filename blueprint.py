@@ -3,6 +3,7 @@
 from flask import Blueprint
 from flask import render_template
 from db_connect import data_base, sql_dict, sql_year, sql_rating
+from genre import sql_genre
 
 movies = Blueprint('movies', __name__, url_prefix='/')
 
@@ -28,6 +29,12 @@ def page_title(title):
 # TODO ======= TODO ======= TODO =========== TODO =========== TODO ===============
 
 
+@movies.route('/genre/<genre>')
+def pag_genre(genre):
+    all_genre = sql_genre(genre)
+    return render_template("genre.html", all_genre=all_genre)
+
+
 @movies.route('/movie/<old_year>/to/<new_year>')
 def page_year(old_year, new_year):
     year_sql = sql_year(old_year, new_year)
@@ -40,20 +47,32 @@ def page_rat(rat):
     all_rat = sql_rating(rat)
     return render_template("rat.html", all_rat=all_rat)
 
+# @movies.route('/rating/<rating>')
+# def page_rating(rating):
+#     if rating == 'family':
+#         return """
+#                 SELECT rating, title
+#                 FROM netflix
+#                 WHERE rating IN ('G', 'PG', 'PG-13')
+#                 """
+#     elif rating == 'children':
+#         return 'children'
+#     elif rating == 'adult':
+#         return 'adult'
 
-@movies.route('/rating/<children>')  #(включаем сюда рейтинг G)
-def page_rating_children(children):
-
-    return render_template("children.html")
-
-
-@movies.route('/rating/<family>')    #(G, PG, PG-13)
-def page_rating_family(family):
-
-    return render_template("family.html")
-
-
-@movies.route('/rating/<adult>')     #(R, NC-17)
-def page_rating_adult(adult):
-
-    return render_template("adult.html")
+# @movies.route('/rating/<children>')  #(включаем сюда рейтинг G)
+# def page_rating_children(children):
+#
+#     return render_template("children.html")
+#
+#
+# @movies.route('/rating/<family>')    #(G, PG, PG-13)
+# def page_rating_family(family):
+#
+#     return render_template("family.html")
+#
+#
+# @movies.route('/rating/<adult>')     #(R, NC-17)
+# def page_rating_adult(adult):
+#
+#     return render_template("adult.html")
