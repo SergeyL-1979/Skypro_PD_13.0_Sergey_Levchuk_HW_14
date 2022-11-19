@@ -45,7 +45,7 @@ def page_year(old_year, new_year):
 @movies.route('/rating/<rat>')
 def page_rat(rat):
     all_rat = sql_rating(rat)
-    return render_template("rat.html", all_rat=all_rat)
+    return render_template("rating.html", all_rat=all_rat)
 
 # @movies.route('/rating/<rating>')
 # def page_rating(rating):
