@@ -8,6 +8,7 @@ from pprint import pprint
 
 
 def data_base():
+    """ Выводит все фильмы из базы """
     with sqlite3.connect('netflix.db') as connection:
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
@@ -35,7 +36,7 @@ def data_base():
 
 
 def sql_dict(title):
-
+    """ Вывод фильма по запросу названию """
     with sqlite3.connect('netflix.db') as connection:
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
@@ -68,7 +69,10 @@ def sql_dict(title):
 
 
 def sql_year(old_year, new_year):
-
+    """
+    Выводит список фильмов от .... года до ..... года
+    НАПРИМЕР: http://127.0.0.1:5000/movie/2000/to/2005
+    """
     with sqlite3.connect('netflix.db') as connection:
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
@@ -103,12 +107,11 @@ def sql_year(old_year, new_year):
 
 
 def sql_rating(rat):
-    # Формат запроса:
-    # /rating/children #(включаем сюда рейтинг G)
-    # /rating/family   #(G, PG, PG-13)
-    # /rating/adult    #(R, NC-17)
-
-    rat_year = ['TV-PG', 'TV-MA', 'R', 'PG-13', 'TV-14', 'TV-PG', 'NR', 'TV-G', 'TV-Y7', 'TV-Y', 'G', 'PG', 'NC-17']
+    """
+    Это работает если ввести рейтинг в адресной строке
+    НАПРИМЕР:
+    http://127.0.0.1:5000/rating/Dramas
+    """
     with sqlite3.connect('netflix.db') as connection:
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
@@ -136,66 +139,3 @@ def sql_rating(rat):
                 )
 
     return rating_sql_list
-
-
-# def sql_group_rating(rat_rat):
-#     # Формат запроса:
-#     # /rating/children #(включаем сюда рейтинг G)
-#     # /rating/family   #(G, PG, PG-13)
-#     # /rating/adult    #(R, NC-17)
-#     # rat_tat = ['TV-PG', 'TV-MA', 'R', 'PG-13', 'TV-14', 'TV-PG', 'NR', 'TV-G', 'TV-Y7', 'TV-Y', 'G', 'PG', 'NC-17']
-#     with sqlite3.connect('netflix.db') as connection:
-#         # connection.row_factory = sqlite3.Row
-#         cursor = connection.cursor()
-#         query = """
-#                 SELECT rating, title
-#                 FROM netflix
-#                 WHERE rating IN ('{}')
-#                 """.format(rat_rat)
-#         cursor.execute(query)
-#
-#     # children = []
-#     # family = []
-#     # adult = []
-#     group_sql = []
-#     for cur in cursor.fetchall():
-#         if rat_rat == cur[0]:
-#             group_sql.append(cur)
-#
-#         # if 'G' == cur[0]:
-#         #     children.append(cur)
-#         #     family.append(cur)
-#         # elif 'PG' == cur[0]:
-#         #     family.append(cur)
-#         # elif 'PG-13' == cur[0]:
-#         #     family.append(cur)
-#         # elif 'R' == cur[0]:
-#         #     adult.append(cur)
-#         # elif 'NC-17' == cur[0]:
-#         #     adult.append(cur)
-#
-#     return group_sql
-
-
-# def sql_group_rating():
-#     # Формат запроса:
-#     # /rating/children #(включаем сюда рейтинг G)
-#     # /rating/family   #(G, PG, PG-13)
-#     # /rating/adult    #(R, NC-17)
-#     # rat_tat = ['TV-PG', 'TV-MA', 'R', 'PG-13', 'TV-14', 'TV-PG', 'NR', 'TV-G', 'TV-Y7', 'TV-Y', 'G', 'PG', 'NC-17']
-#     with sqlite3.connect('netflix.db') as connection:
-#         # connection.row_factory = sqlite3.Row
-#         cursor = connection.cursor()
-#         query = """
-#                 SELECT rating, title
-#                 FROM netflix
-#                 WHERE rating IN ('G', 'PG', 'PG-13')
-#                 """
-#
-#         cursor.execute(query)
-#         for cur in cursor.fetchall():
-#             print(cur)
-
-# g_rat = sql_group_rating()
-# pprint(g_rat)
-# pprint(data_base())
