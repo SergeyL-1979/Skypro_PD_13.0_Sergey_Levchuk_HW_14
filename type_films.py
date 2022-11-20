@@ -40,4 +40,4 @@ def get_sql_films(listed_in, release_year, type_films):
         return films_list
 
 
-pprint(get_sql_films('TV Shows', 2017, 'Movie'))
+# pprint(get_sql_films('TV Shows', 2017, 'Movie'))
