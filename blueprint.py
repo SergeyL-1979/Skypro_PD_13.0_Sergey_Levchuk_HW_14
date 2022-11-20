@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint
 from flask import render_template
-from db_connect import data_base, sql_dict, sql_year, sql_rating
+from db_connect import data_base, sql_dict, sql_year
+from group_rating import sql_rating
 from genre import sql_genre
 
 movies = Blueprint('movies', __name__, url_prefix='/')
@@ -20,15 +21,6 @@ def page_title(title):
     """ Выводит фильм по названию """
     movies_title = sql_dict(title)
     return render_template("movies.html", movies_title=movies_title)
-
-# TODO =====  разобраться как работает данная вьюшка с БД ============== TODO ===
-# @movies.route('/movies/<title>')
-# def search_title(title):
-#     query = f"SELECT title, country, release_year, listed_in, description FROM netflix " \
-#             f"WHERE title = '{title}' " \
-#             f"ORDER BY release_year DESC " \
-#             f"LIMIT 1"
-# TODO ======= TODO ======= TODO =========== TODO =========== TODO ===============
 
 
 @movies.route('/genre/<genre>')
@@ -58,33 +50,3 @@ def page_rat(rat):
     """
     all_rat = sql_rating(rat)
     return render_template("rating.html", all_rat=all_rat)
-
-# @movies.route('/rating/<rating>')
-# def page_rating(rating):
-#     if rating == 'family':
-#         return """
-#                 SELECT rating, title
-#                 FROM netflix
-#                 WHERE rating IN ('G', 'PG', 'PG-13')
-#                 """
-#     elif rating == 'children':
-#         return 'children'
-#     elif rating == 'adult':
-#         return 'adult'
-
-# @movies.route('/rating/<children>')  #(включаем сюда рейтинг G)
-# def page_rating_children(children):
-#
-#     return render_template("children.html")
-#
-#
-# @movies.route('/rating/<family>')    #(G, PG, PG-13)
-# def page_rating_family(family):
-#
-#     return render_template("family.html")
-#
-#
-# @movies.route('/rating/<adult>')     #(R, NC-17)
-# def page_rating_adult(adult):
-#
-#     return render_template("adult.html")

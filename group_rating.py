@@ -4,106 +4,46 @@
 Подключение к sqlite3
 """
 import sqlite3
+from utils import db_connection
 from pprint import pprint
 
 
-def sql_group_rating(rating):
-    """
-    Тут я пытался реализовать именно распределение по группам
-    # Формат запроса:
-    # /rating/children #(включаем сюда рейтинг G)
-    # /rating/family   #(G, PG, PG-13)
-    # /rating/adult    #(R, NC-17)
-    Но так не получилось
-    """
+def sql_rating(rat):
 
-    # rat_tat = ['TV-PG', 'TV-MA', 'R', 'PG-13', 'TV-14', 'TV-PG', 'NR', 'TV-G', 'TV-Y7', 'TV-Y', 'G', 'PG', 'NC-17']
-    with sqlite3.connect('netflix.db') as connection:
-        # connection.row_factory = sqlite3.Row
-        cursor = connection.cursor()
-        children_query = """
-                SELECT rating, title
-                FROM netflix
-                WHERE rating IN ('G')
-                """.format(rating)
-        family_query = """
-                SELECT rating, title
-                FROM netflix
-                WHERE rating IN ('G', 'PG', 'PG-13')
-                """.format(rating)
-        adult_query = """
-                SELECT rating, title
-                FROM netflix
-                WHERE rating IN ('R', 'NC-17')
-                """.format(rating)
+    rating_query = ('G', 'PG', 'PG-13', 'R', 'NC-17')
 
-        cur_children = cursor.execute(children_query)
-        cur_family = cursor.execute(family_query)
-        cur_adult = cursor.execute(adult_query)
-        for cur in cur_adult.fetchall():
-            print(cur)
+    if rat.lower() == "children":
+        rating_query = ('G', )
+    elif rat.lower() == "family":
+        rating_query = ('G', 'PG', 'PG-13')
+    elif rat.lower() == "adult":
+        rating_query = ('R', 'NC-17')
+
+    placeholder = '?'
+    placeholders = ', '.join(placeholder for _ in rating_query)
+
+    cursor = db_connection()
+    query = """ 
+            SELECT title, rating, description
+            FROM netflix
+            WHERE rating IN (%s)
+            """ % placeholders
+
+    cursor.execute(query, rating_query)
+    sql_rating_result = cursor.fetchall()
+
+    rating_sql_list = []
+
+    for i in sql_rating_result:
+        rating_sql_list.append(
+            {
+                "title": i["title"],
+                "rating": i['rating'],
+                "description": i["description"]
+            }
+        )
+
+    return rating_sql_list
 
 
-pprint(sql_group_rating('NC-17'))
-
-# def sql_group_rating(rat_rat):
-#     # Формат запроса:
-#     # /rating/children #(включаем сюда рейтинг G)
-#     # /rating/family   #(G, PG, PG-13)
-#     # /rating/adult    #(R, NC-17)
-#     # rat_tat = ['TV-PG', 'TV-MA', 'R', 'PG-13', 'TV-14', 'TV-PG', 'NR', 'TV-G', 'TV-Y7', 'TV-Y', 'G', 'PG', 'NC-17']
-#     with sqlite3.connect('netflix.db') as connection:
-#         # connection.row_factory = sqlite3.Row
-#         cursor = connection.cursor()
-#         query = """
-#                 SELECT rating, title
-#                 FROM netflix
-#                 WHERE rating IN ('{}')
-#                 """.format(rat_rat)
-#         cursor.execute(query)
-#
-#     # children = []
-#     # family = []
-#     # adult = []
-#     group_sql = []
-#     for cur in cursor.fetchall():
-#         if rat_rat == cur[0]:
-#             group_sql.append(cur)
-#
-#         # if 'G' == cur[0]:
-#         #     children.append(cur)
-#         #     family.append(cur)
-#         # elif 'PG' == cur[0]:
-#         #     family.append(cur)
-#         # elif 'PG-13' == cur[0]:
-#         #     family.append(cur)
-#         # elif 'R' == cur[0]:
-#         #     adult.append(cur)
-#         # elif 'NC-17' == cur[0]:
-#         #     adult.append(cur)
-#
-#     return group_sql
-
-# def sql_group_rating():
-#     # Формат запроса:
-#     # /rating/children #(включаем сюда рейтинг G)
-#     # /rating/family   #(G, PG, PG-13)
-#     # /rating/adult    #(R, NC-17)
-#     # rat_tat = ['TV-PG', 'TV-MA', 'R', 'PG-13', 'TV-14', 'TV-PG', 'NR', 'TV-G', 'TV-Y7', 'TV-Y', 'G', 'PG', 'NC-17']
-#     with sqlite3.connect('netflix.db') as connection:
-#         # connection.row_factory = sqlite3.Row
-#         cursor = connection.cursor()
-#         query = """
-#                 SELECT rating, title
-#                 FROM netflix
-#                 WHERE rating IN ('G', 'PG', 'PG-13')
-#                 """
-#
-#         cursor.execute(query)
-#         for cur in cursor.fetchall():
-#             print(cur)
-
-# g_rat = sql_group_rating()
-# pprint(g_rat)
-# pprint(data_base())
-
+# pprint(sql_rating('family'))
