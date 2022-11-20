@@ -8,10 +8,10 @@ def get_actors(actor_1, actor_2):
         cur = con.cursor()
 
         sqlite_query = """
-                        SELECT COUNT(distinct "cast") as 'actor', title, "cast", "type", release_year
+                        SELECT COUNT(distinct "cast") as 'actor', "cast"
                         FROM netflix
-                        WHERE "cast" LIKE '%{}%' OR "cast" LIKE '%{}%'
-                        GROUP BY "cast"
+                        WHERE "cast" LIKE '%{}%' AND "cast" LIKE '%{}%'
+                        
                         """.format(actor_1, actor_2)
 
         result = cur.execute(sqlite_query)
@@ -20,23 +20,17 @@ def get_actors(actor_1, actor_2):
         genre_list = []
         for i in get_genre:
             point = i['actor']
-            title = i["title"]
-            description = i["type"]
-            release_year = i["release_year"]
             cast = i["cast"]
 
             genre_list.append(
                 {
                     "count": point,
-                    "title": title,
-                    "description": description,
-                    "release_year": release_year,
                     "cast": cast
                 }
             )
         return genre_list
 
 
-# pprint(get_actors('Jack Black', 'Dustin Hoffman'))
-pprint(get_actors('Rose McIver', 'Ben Lamb'))
+pprint(get_actors('Jack Black', 'Dustin Hoffman'))
+# pprint(get_actors('Rose McIver', 'Ben Lamb'))
 
