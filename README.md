@@ -17,23 +17,7 @@
 ## Нужна помощь в реализации
    * Шаг 5
 Это работает но мне не понятен один момент в задании
-```python
-import sqlite3
-from pprint import pprint
-
-with sqlite3.connect("netflix.db") as con:
-    # con.row_factory = sqlite3.Row
-    cur = con.cursor()
-    sqlite_query = """
-                    SELECT COUNT(distinct "cast") as 'actor', "cast", "type", release_year
-                    FROM netflix
-                    WHERE "cast" LIKE '%Jack Black%' OR "cast" LIKE '%Dustin Hoffman%'
-                    GROUP BY "cast"
-                    """
-    result = cur.execute(sqlite_query)
-    get_genre = result.fetchall()
-    pprint(get_genre)
-```
+Правильно ли сделано ТЗ?
 ---
    * Шаг 6
 Но тоже сомневаюсь в правильности решения
