@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import Blueprint
-from flask import render_template
+from flask import render_template, jsonify
 from db_connect import data_base, sql_dict, sql_year
 from group_rating import sql_rating
 from genre import sql_genre
@@ -20,6 +20,7 @@ def all_movies():
 def page_title(title):
     """ Выводит фильм по названию """
     movies_title = sql_dict(title)
+    # return jsonify(movies_title)
     return render_template("movies.html", movies_title=movies_title)
 
 
